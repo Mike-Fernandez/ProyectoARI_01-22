@@ -1,0 +1,42 @@
+[
+	{
+        	"documento" : "03991034-7",
+        	"primer-nombre" : "Jaime",
+        	"apellido" : "Climaco",
+        	"credit-card" : "4567467811114",
+        	"tipo" : "GOLD",
+        	"telefono" : "22507878"
+	},
+	{
+        	"documento" : "01992635-1",
+        	"primer-nombre" : "Juan",
+        	"apellido" : "Perez",
+        	"credit-card" : "1053467877774",
+        	"tipo" : "SILVER",
+        	"telefono" : "77556879"
+	},
+	{
+        	"documento" : "01992635-1",
+        	"primer-nombre" : "Juan",
+        	"apellido" : "Perez2",
+        	"credit-card" : "1053467877774",
+        	"tipo" : "SILVER",
+        	"telefono" : "77556879"
+	},
+	{
+        	"documento" : "01992635-1",
+        	"primer-nombre" : "Juan",
+        	"apellido" : "Perez3",
+        	"credit-card" : "1053467877774",
+        	"tipo" : "SILVER",
+        	"telefono" : "77556879"
+	},
+	{
+        	"documento" : "01992635-1",
+        	"primer-nombre" : "Juan",
+        	"apellido" : "Perez4",
+        	"credit-card" : "1053467877774",
+        	"tipo" : "SILVER",
+        	"telefono" : "77556879"
+	}
+]

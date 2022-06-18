@@ -15,4 +15,28 @@
     	<tipo>SILVER</tipo>
     	<telefono>77556879</telefono>
 	</cliente>
+	<cliente>
+    	<documento>01992635-1</documento>
+    	<primer-nombre>Juan</primer-nombre>
+    	<apellido>Perez2</apellido>
+    	<credit-card>1053467877774</credit-card>
+    	<tipo>SILVER</tipo>
+    	<telefono>77556879</telefono>
+	</cliente>
+	<cliente>
+    	<documento>01992635-1</documento>
+    	<primer-nombre>Juan</primer-nombre>
+    	<apellido>Perez3</apellido>
+    	<credit-card>1053467877774</credit-card>
+    	<tipo>SILVER</tipo>
+    	<telefono>77556879</telefono>
+	</cliente>
+	<cliente>
+    	<documento>01992635-1</documento>
+    	<primer-nombre>Juan</primer-nombre>
+    	<apellido>Perez4</apellido>
+    	<credit-card>1053467877774</credit-card>
+    	<tipo>SILVER</tipo>
+    	<telefono>77556879</telefono>
+	</cliente>
 </clientes>
