@@ -1,9 +1,13 @@
 from email import message
+import json
 from tkinter import *
 from tkinter import filedialog
 from tkinter import messagebox
 import csv
-
+from venv import create
+import jwt
+import json
+from types import SimpleNamespace
 
 root = Tk()
 root.title("Testing")
@@ -50,14 +54,15 @@ def desVigenere(Final, Clave):
     return cad
 
 def convertRowtoJSON(row, clave):
-    return """\t{
-        \t\"documento\" : \"%s\",
-        \t\"primer-nombre\" : \"%s\",
-        \t\"apellido\" : \"%s\",
-        \t\"credit-card\" : \"%s\",
-        \t\"tipo\" : \"%s\",
-        \t\"telefono\" : \"%s\"
-\t}""" %(row[0],row[1],row[2],row[3],row[4],row[5])
+    objeto = """{
+    \"documento\": \"%s\",
+    \"primer-nombre\": \"%s\",
+    \"apellido\": \"%s\",
+    \"credit-card\": \"%s\",
+    \"tipo\": \"%s\",
+    \"telefono\": \"%s\"
+    }""" %(row[0],row[1],row[2],row[3],row[4],row[5])
+    return createJWT(objeto, clave)
 
 
 def convertRowtoXML(row, clave):
@@ -71,16 +76,35 @@ def convertRowtoXML(row, clave):
     \t<telefono>%s</telefono>
 \t</cliente>""" %(row[0],row[1],row[2],ccNumCifrado,row[4],row[5])
 
+def createJWT(json1, clave):
+    a = json.loads(json1)    
+    token = jwt.encode(payload=a, key=clave)
+    return token
 
-def errorMessage():
-    messagebox.showerror("ERROR", "La clave ingresada no es valida")
+#    try:
+#        f = open("output.json")
+#        pl = json.load(f)
+#        print("/////////////////PAYLOAD/////////////////")
+#        print(pl)
+#        token = jwt.encode(payload=pl, key=clave)
+#        with open("jwt.txt", 'w') as w:
+#            w.write(token)
+#    except:
+#        errorMessage("Error while fetching json object")
+#    finally:
+#        f.close()
+#    
+    
+
+def errorMessage(mensaje):
+    messagebox.showerror("ERROR", mensaje)
 
 def toXML(clave):
     boolean = clave.isnumeric()
     print("Clave" + clave)
     print("Boolean if clave" + str(boolean))
     if not boolean :
-        errorMessage()
+        errorMessage("La clave ingresada no es valida")
         root.quit()
     else :
         root.filename = filedialog.askopenfilename(initialdir="/Users/operator/Documents/ARI/Proyecto", title="Select a file", filetypes=(("csv files", "*.csv"),("all files", "*.*")))
@@ -102,7 +126,7 @@ def toXML(clave):
 
         print("it worked!")
 
-def toJSON():
+def toJSON(clave):
     root.filename = filedialog.askopenfilename(initialdir="/Users/operator/Documents/ARI/Proyecto", title="Select a file", filetypes=(("csv files", "*.csv"),("all files", "*.*")))
     
     f = open(root.filename)
@@ -115,15 +139,19 @@ def toJSON():
 
     print(data)
 
-    with open('output.json', 'w') as w:
+    with open('jwt.txt', 'w') as w:
         w.write("[\n")
-        w.write('\n'.join([(convertRowtoJSON(n) + ',') for n in data]))
+        print("//////////////////////TOKEN//////////////////////")
+        for n in data:
+            print("HERE "+str(convertRowtoJSON(n, clave))+" , ")
+        w.write('\n'.join([(str(convertRowtoJSON(n, clave)) + ',') for n in data]))
     
-    with open('output.json', 'r') as r:
+    with open('jwt.txt', 'r') as r:
         fix = r.read()[:-1]
-    with open('output.json', 'w') as w:
+    with open('jwt.txt', 'w') as w:
         w.write(fix)
         w.write("\n]")
+
 
     print("it worked!")
 
@@ -137,7 +165,7 @@ toXMLbutton = Button(root, text="Convertir a XML", command=lambda: toXML(claveVi
 toXMLbutton.pack()
 
 label2 = Label(root, text="Seleccione el archivo para convertirlo a JSON").pack()
-toJSONbutton = Button(root, text="Convertir a JSON", command=toJSON)
+toJSONbutton = Button(root, text="Convertir a JSON", command=lambda: toJSON(claveVig.get()))
 toJSONbutton.pack()
 
 buttonQuit = Button(root, text="Exit", command=root.quit)
