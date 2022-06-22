@@ -1,5 +1,8 @@
+from cProfile import label
 from email import message
 import json
+from optparse import Option
+from struct import pack
 from tkinter import *
 from tkinter import filedialog
 from tkinter import messagebox
@@ -11,6 +14,14 @@ from types import SimpleNamespace
 
 root = Tk()
 root.title("Proyecto ARI")
+
+delimitadores = [
+    ',',
+    ';',
+]
+
+clicked = StringVar()
+clicked.set(delimitadores[1])
 
 def cifVigenere(Mensaje, Clave):
     Abecedario = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789" 
@@ -104,9 +115,9 @@ def errorMessage(mensaje):
 
 def JWTtoJSON(clave):
     root.filename = filedialog.askopenfilename(initialdir="/Users/operator/Documents/ARI/Proyecto", title="Select a file", filetypes=(("text files", "*.txt"),("all files", "*.*")))
-
+    delimitador = clicked.get()
     f = open(root.filename)
-    csv_f = csv.reader(f, delimiter=',')
+    csv_f = csv.reader(f, delimiter=delimitador)
     data = []
 
     for row in csv_f:
@@ -136,9 +147,9 @@ def toXML(clave):
         root.quit()
     else :
         root.filename = filedialog.askopenfilename(initialdir="/Users/operator/Documents/ARI/Proyecto", title="Select a file", filetypes=(("csv files", "*.csv"),("all files", "*.*")))
-
+        delimitador = clicked.get()
         f = open(root.filename)
-        csv_f = csv.reader(f, delimiter=';')
+        csv_f = csv.reader(f, delimiter=delimitador)
         data = []
 
         for row in csv_f:
@@ -156,9 +167,9 @@ def toXML(clave):
 
 def toJSON(clave):
     root.filename = filedialog.askopenfilename(initialdir="/Users/operator/Documents/ARI/Proyecto", title="Select a file", filetypes=(("csv files", "*.csv"),("all files", "*.*")))
-    
+    delimitador = clicked.get()
     f = open(root.filename)
-    csv_f = csv.reader(f, delimiter=';')
+    csv_f = csv.reader(f, delimiter=delimitador)
     data = []
 
     for row in csv_f:
@@ -184,6 +195,10 @@ welcome = Label(root, text="Ingrese la clave a usar en el cifrado o descifrado")
 welcome2 = Label(root, text="CLAVE DEBE DE SER NUMÉRICA").pack()
 claveVig = Entry(root)
 claveVig.pack()
+
+labelDelim = Label(root, text="Seleccione el delimitador del archivo a procesar \n Si se produce algun error verifique que el delimitador sea el correcto").pack()
+drop = OptionMenu(root, clicked,*delimitadores)
+drop.pack()
 
 label1 = Label(root, text="Seleccione el archivo para convertirlo a XML").pack()
 toXMLbutton = Button(root, text="Convertir a XML", command=lambda: toXML(claveVig.get()))
