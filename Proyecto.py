@@ -10,7 +10,7 @@ import json
 from types import SimpleNamespace
 
 root = Tk()
-root.title("Testing")
+root.title("Proyecto ARI")
 
 def cifVigenere(Mensaje, Clave):
     Abecedario = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789" 
@@ -94,10 +94,38 @@ def createJWT(json1, clave):
 #    finally:
 #        f.close()
 #    
-    
+
+def decodeJWT(row, clave):
+    token = row[0]
+    return jwt.decode(token,clave,algorithms=['HS256',])
 
 def errorMessage(mensaje):
     messagebox.showerror("ERROR", mensaje)
+
+def JWTtoJSON(clave):
+    root.filename = filedialog.askopenfilename(initialdir="/Users/operator/Documents/ARI/Proyecto", title="Select a file", filetypes=(("text files", "*.txt"),("all files", "*.*")))
+
+    f = open(root.filename)
+    csv_f = csv.reader(f, delimiter=',')
+    data = []
+
+    for row in csv_f:
+        data.append(row)
+    f.close()
+
+    with open('output.json', 'w') as w:
+        w.write("[\n")
+        w.write('\n'.join([(str(decodeJWT(n, clave))) for n in data]))
+    
+    with open('output.json', 'r') as r:
+        fix = r.read()[:-1]
+    with open('output.json', 'w') as w:
+        w.write(fix)
+        w.write("\n]")
+
+
+    print("it worked!")
+
 
 def toXML(clave):
     boolean = clave.isnumeric()
@@ -140,22 +168,19 @@ def toJSON(clave):
     print(data)
 
     with open('jwt.txt', 'w') as w:
-        w.write("[\n")
-        print("//////////////////////TOKEN//////////////////////")
-        for n in data:
-            print("HERE "+str(convertRowtoJSON(n, clave))+" , ")
+#        w.write("[\n")
         w.write('\n'.join([(str(convertRowtoJSON(n, clave)) + ',') for n in data]))
     
-    with open('jwt.txt', 'r') as r:
-        fix = r.read()[:-1]
-    with open('jwt.txt', 'w') as w:
-        w.write(fix)
-        w.write("\n]")
+#    with open('jwt.txt', 'r') as r:
+#        fix = r.read()[:-1]
+#    with open('jwt.txt', 'w') as w:
+#        w.write(fix)
+#        w.write("\n]")
 
 
     print("it worked!")
 
-welcome = Label(root, text="Ingrese la clave para cifrar el numero de tarjeta").pack()
+welcome = Label(root, text="Ingrese la clave a usar en el cifrado o descifrado").pack()
 welcome2 = Label(root, text="CLAVE DEBE DE SER NUMÉRICA").pack()
 claveVig = Entry(root)
 claveVig.pack()
@@ -164,7 +189,11 @@ label1 = Label(root, text="Seleccione el archivo para convertirlo a XML").pack()
 toXMLbutton = Button(root, text="Convertir a XML", command=lambda: toXML(claveVig.get()))
 toXMLbutton.pack()
 
-label2 = Label(root, text="Seleccione el archivo para convertirlo a JSON").pack()
+label2 = Label(root, text="Decodifique JWT a JSON").pack()
+toXMLbutton = Button(root, text="Decodifique JWT", command=lambda: JWTtoJSON(claveVig.get()))
+toXMLbutton.pack()
+
+label3 = Label(root, text="Seleccione el archivo para convertirlo a JSON").pack()
 toJSONbutton = Button(root, text="Convertir a JSON", command=lambda: toJSON(claveVig.get()))
 toJSONbutton.pack()
 
