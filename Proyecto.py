@@ -1,16 +1,20 @@
-from cProfile import label
-from email import message
-import json
-from optparse import Option
-from struct import pack
+#from cProfile import label
+#from email import message
+#import json
+#from optparse import Option
+#from struct import pack
+from cgitb import text
 from tkinter import *
 from tkinter import filedialog
 from tkinter import messagebox
 import csv
-from venv import create
+import tkinter
+from tkinter.scrolledtext import ScrolledText
+#from turtle import width
+#from venv import create
 import jwt
 import json
-from types import SimpleNamespace
+#from types import SimpleNamespace
 
 root = Tk()
 root.title("Proyecto ARI")
@@ -41,7 +45,7 @@ def cifVigenere(Mensaje, Clave):
             Final=Final+Abecedario[Modulo] ##Sumamos la letra cifrada, al conjunto de respuesta
             I=I+1 ##aumentamos una posicion, para cifrar la siguiente letra del mensaje
 
-    print (Final) ##revelamos el resultado final
+#    print (Final) ##revelamos el resultado final
     return Final
 
 def desVigenere(Final, Clave):
@@ -154,9 +158,20 @@ def toXML(clave):
 
         for row in csv_f:
             data.append(row)
+            
         f.close()
 
-        print(data)
+        file = open(root.filename)
+        reader = csv.reader(file)
+        dataPrint=""
+        for line in reader:
+            dataPrint+= str(line)
+        file.close()
+
+        print(str(type(dataPrint)))
+        #scrollInStringvar.set(str(n + "\n") for n in data)
+        scrollInStringvar.set(dataPrint)
+
 
         with open('output.xml', 'w') as w:
             w.write("<clientes>\n")
@@ -211,6 +226,18 @@ toXMLbutton.pack()
 label3 = Label(root, text="Seleccione el archivo para convertirlo a JSON").pack()
 toJSONbutton = Button(root, text="Convertir a JSON", command=lambda: toJSON(claveVig.get()))
 toJSONbutton.pack()
+
+label4=Label(root, text="Archivo fuente de los datos a procesar").pack()
+
+
+scrollInStringvar = StringVar()
+scrollInStringvar.set("Aqui se mostrará el documento origen")
+scrollIn= Label(root, textvariable=scrollInStringvar, wraplength=500).pack(pady=10,padx=10)
+
+label5=Label(root, text="Resultado obtenido de procesamiento").pack()
+scrollOut = ScrolledText(root, width=50, height=10)
+scrollOut.pack()
+
 
 buttonQuit = Button(root, text="Exit", command=root.quit)
 buttonQuit.pack()
