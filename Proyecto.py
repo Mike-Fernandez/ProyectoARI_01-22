@@ -1,21 +1,11 @@
-#from cProfile import label
-#from email import message
-#import json
-#from optparse import Option
-#from struct import pack
-from cgitb import text
-from distutils.log import error
+from pydoc import doc
 from tkinter import *
 from tkinter import filedialog
 from tkinter import messagebox
 import csv
-import tkinter
-from tkinter.scrolledtext import ScrolledText
-#from turtle import width
-#from venv import create
 import jwt
 import json
-#from types import SimpleNamespace
+import xml.etree.ElementTree as xet
 
 root = Tk()
 root.title("Proyecto ARI")
@@ -30,8 +20,6 @@ clicked.set(delimitadores[1])
 
 def cifVigenere(Mensaje, Clave):
     Abecedario = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789" 
-    #Mensaje = input("Ingresa el Mensaje a Cifrar:  ").upper() 
-    #Clave = input("Ingresa la Clave:  ").upper()
     Final = "" 
     I = 0  
     
@@ -39,20 +27,16 @@ def cifVigenere(Mensaje, Clave):
         if x == " ":
             Final += "*"
         else: 
-            Mod_cl=I%len(Clave) ##segun la letra en la que estemos, sabremos que letra de la clave se le fue asignada
-            Asignada=Clave[Mod_cl] ##obtenemos la letra clave asignada
+            Mod_cl=I%len(Clave) 
+            Asignada=Clave[Mod_cl] 
             Sumando=Abecedario.find(x)+Abecedario.find(Asignada) ##sumamos la letra del mensaje y la letra clave asignada a la misma
             Modulo=(Sumando%36) ##obtenido el resultado de la suma, lo modulamos con la longitud del abecedario utilizado
             Final=Final+Abecedario[Modulo] ##Sumamos la letra cifrada, al conjunto de respuesta
             I=I+1 ##aumentamos una posicion, para cifrar la siguiente letra del mensaje
 
-#    print (Final) ##revelamos el resultado final
     return Final
 
 def desVigenere(Final, Clave):
-#def desVigenere():
-    #Final = input("Ingrese el mensaje a descrifrar:  ").upper()
-    #Clave = input("Ingresa la Clave:  ").upper()
     Abecedario = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
     cad=""
     I=0
@@ -68,6 +52,9 @@ def desVigenere(Final, Clave):
             I=I+1
     print(cad)
     return cad
+
+
+
 
 def convertRowtoJSON(row, clave):
     objeto = """{
@@ -128,6 +115,40 @@ def decodeJWT(row, clave):
 
 def errorMessage(mensaje):
     messagebox.showerror("ERROR", mensaje)
+
+def convertXMLtoCSV(clave):
+    cols = ["documento", "primer-nombre", "apellido", "credit-card", "tipo", "telefono"]
+    rows = ""
+    root.filename = filedialog.askopenfilename(initialdir="/Users/operator/Documents/ARI/Proyecto", title="Select a file", filetypes=(("XML files", "*.xml"),("all files", "*.*")))
+    xmlParse = xet.parse(root.filename)
+    xmlR = xmlParse.getroot()
+    for i in xmlR:
+        documento = i.find("documento").text
+        primer_nombre = i.find("primer-nombre").text
+        apellido = i.find("apellido").text
+        credit_card = i.find("credit-card").text
+        tipo = i.find("tipo").text
+        telefono = i.find("telefono").text
+
+        rows += """%s %s %s %s %s %s \n"""%(documento+clicked.get(), primer_nombre+clicked.get(),
+                                           apellido + clicked.get(), credit_card + clicked.get(),
+                                           tipo + clicked.get(), telefono)
+            
+#            
+#            
+#            {"documento": documento + clicked.get()
+#                     "primer-nombre": primer_nombre + clicked.get()
+#                     "apellido": apellido+ clicked.get()
+#                     "credit-card":credit_card+ clicked.get()
+#                     "tipo": tipo + clicked.get()
+#                     "telefono": telefono})
+    
+    print("/////////////ROWS/////////////")
+    print(rows)
+
+    with open('output.csv', 'w') as w:
+        w.write(rows)
+#        w.write('\n'.join([convertRowtoXML(n,clave) for n in rows]))
 
 def JWTtoJSON(clave):
     try:
@@ -234,6 +255,10 @@ toXMLbutton.pack()
 label3 = Label(root, text="Seleccione el archivo para convertirlo a JSON").pack()
 toJSONbutton = Button(root, text="Convertir a JSON", command=lambda: toJSON(claveVig.get()))
 toJSONbutton.pack()
+
+labelreverseXML = Label(root, text="Seleccione el documento XML para convertirlo a csv").pack()
+XMLtoCSVbutton = Button(root, text="Convertir XML a CSV", command=lambda: convertXMLtoCSV(claveVig.get())).pack()
+
 
 label4=Label(root, text="Archivo fuente de los datos a procesar").pack()
 
