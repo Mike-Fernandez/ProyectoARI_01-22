@@ -4,6 +4,7 @@
 #from optparse import Option
 #from struct import pack
 from cgitb import text
+from distutils.log import error
 from tkinter import *
 from tkinter import filedialog
 from tkinter import messagebox
@@ -110,6 +111,17 @@ def createJWT(json1, clave):
 #        f.close()
 #    
 
+def showInputFile(filename):
+    file = open(filename)
+    reader = csv.reader(file)
+    dataPrint=""
+    for line in reader:
+        dataPrint+= str(line)
+    file.close()
+
+    print(str(type(dataPrint)))
+    scrollInStringvar.set(dataPrint)
+
 def decodeJWT(row, clave):
     token = row[0]
     return jwt.decode(token,clave,algorithms=['HS256',])
@@ -118,26 +130,30 @@ def errorMessage(mensaje):
     messagebox.showerror("ERROR", mensaje)
 
 def JWTtoJSON(clave):
-    root.filename = filedialog.askopenfilename(initialdir="/Users/operator/Documents/ARI/Proyecto", title="Select a file", filetypes=(("text files", "*.txt"),("all files", "*.*")))
-    delimitador = clicked.get()
-    f = open(root.filename)
-    csv_f = csv.reader(f, delimiter=delimitador)
-    data = []
+    try:
+        root.filename = filedialog.askopenfilename(initialdir="/Users/operator/Documents/ARI/Proyecto", title="Select a file", filetypes=(("text files", "*.txt"),("all files", "*.*")))
+        delimitador = clicked.get()
+        f = open(root.filename)
+        csv_f = csv.reader(f, delimiter=delimitador)
+        data = []
 
-    for row in csv_f:
-        data.append(row)
-    f.close()
+        for row in csv_f:
+            data.append(row)
+        f.close()
 
-    with open('output.json', 'w') as w:
-        w.write("[\n")
-        w.write('\n'.join([(str(decodeJWT(n, clave))) for n in data]))
-    
-    with open('output.json', 'r') as r:
-        fix = r.read()[:-1]
-    with open('output.json', 'w') as w:
-        w.write(fix)
-        w.write("\n]")
+        showInputFile(root.filename)
 
+        with open('output.json', 'w') as w:
+            w.write("[\n")
+            w.write("\n".join([(str(decodeJWT(n, clave))+',') for n in data]))
+
+        with open('output.json', 'r') as r:
+            fix = r.read()[:-1]
+        with open('output.json', 'w') as w:
+            w.write(fix)
+            w.write("\n]")
+    except:
+        errorMessage("Error al decodificar JWT, verifique que el delimitador sea el correcto")
 
     print("it worked!")
 
@@ -161,17 +177,7 @@ def toXML(clave):
             
         f.close()
 
-        file = open(root.filename)
-        reader = csv.reader(file)
-        dataPrint=""
-        for line in reader:
-            dataPrint+= str(line)
-        file.close()
-
-        print(str(type(dataPrint)))
-        #scrollInStringvar.set(str(n + "\n") for n in data)
-        scrollInStringvar.set(dataPrint)
-
+        showInputFile(root.filename)
 
         with open('output.xml', 'w') as w:
             w.write("<clientes>\n")
@@ -192,6 +198,8 @@ def toJSON(clave):
     f.close()
 
     print(data)
+
+    showInputFile(root.filename)
 
     with open('jwt.txt', 'w') as w:
 #        w.write("[\n")
@@ -234,9 +242,9 @@ scrollInStringvar = StringVar()
 scrollInStringvar.set("Aqui se mostrará el documento origen")
 scrollIn= Label(root, textvariable=scrollInStringvar, wraplength=500).pack(pady=10,padx=10)
 
-label5=Label(root, text="Resultado obtenido de procesamiento").pack()
-scrollOut = ScrolledText(root, width=50, height=10)
-scrollOut.pack()
+scrollOutStringvar = StringVar()
+scrollOutStringvar.set("Aqui se mostrará el documento generado")
+scrollOut= Label(root, textvariable=scrollOutStringvar, wraplength=500).pack(pady=10,padx=10)
 
 
 buttonQuit = Button(root, text="Exit", command=root.quit)
