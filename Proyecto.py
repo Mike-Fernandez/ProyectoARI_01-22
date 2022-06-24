@@ -1,4 +1,3 @@
-from pydoc import doc
 from tkinter import *
 from tkinter import filedialog
 from tkinter import messagebox
@@ -132,7 +131,7 @@ def XMLtoCSV(clave):
         telefono = i.find("telefono").text
 
         rows += """%s %s %s %s %s %s \n"""%(documento+clicked.get(), primer_nombre+clicked.get(),
-                                           apellido + clicked.get(), credit_card + clicked.get(),
+                                           apellido + clicked.get(), desVigenere(credit_card,clave) + clicked.get(),
                                            tipo + clicked.get(), telefono)
             
     
@@ -171,8 +170,10 @@ def JWTtoJSON(clave):
 
         with open('output.json', 'r') as r:
             fix = r.read()[:-1]
+        fix2 = fix.replace("'", '"')
+        print(fix2)
         with open('output.json', 'w') as w:
-            w.write(fix)
+            w.write(fix2)
             w.write("\n]")
     except:
         errorMessage("Error al decodificar JWT, verifique que el delimitador sea el correcto")
