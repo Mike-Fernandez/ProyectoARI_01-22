@@ -6,6 +6,7 @@ import csv
 import jwt
 import json
 import xml.etree.ElementTree as xet
+import pandas as pd
 
 root = Tk()
 root.title("Proyecto ARI")
@@ -116,7 +117,7 @@ def decodeJWT(row, clave):
 def errorMessage(mensaje):
     messagebox.showerror("ERROR", mensaje)
 
-def convertXMLtoCSV(clave):
+def XMLtoCSV(clave):
     cols = ["documento", "primer-nombre", "apellido", "credit-card", "tipo", "telefono"]
     rows = ""
     root.filename = filedialog.askopenfilename(initialdir="/Users/operator/Documents/ARI/Proyecto", title="Select a file", filetypes=(("XML files", "*.xml"),("all files", "*.*")))
@@ -134,21 +135,21 @@ def convertXMLtoCSV(clave):
                                            apellido + clicked.get(), credit_card + clicked.get(),
                                            tipo + clicked.get(), telefono)
             
-#            
-#            
-#            {"documento": documento + clicked.get()
-#                     "primer-nombre": primer_nombre + clicked.get()
-#                     "apellido": apellido+ clicked.get()
-#                     "credit-card":credit_card+ clicked.get()
-#                     "tipo": tipo + clicked.get()
-#                     "telefono": telefono})
     
     print("/////////////ROWS/////////////")
     print(rows)
 
     with open('output.csv', 'w') as w:
         w.write(rows)
-#        w.write('\n'.join([convertRowtoXML(n,clave) for n in rows]))
+
+def JSONtoCSV():
+    root.filename = filedialog.askopenfilename(initialdir="/Users/operator/Documents/ARI/Proyecto", title="Select a file", filetypes=(("JSON files", "*.json"),("all files", "*.*")))
+    pdObject = pd.read_json(root.filename, orient='values')
+    csvData = pdObject.to_csv(index=False)
+    print("///////////////CSV///////////////")
+    with open('outputJSON.csv', 'w') as w:
+        w.write(csvData)
+
 
 def JWTtoJSON(clave):
     try:
@@ -257,7 +258,10 @@ toJSONbutton = Button(root, text="Convertir a JSON", command=lambda: toJSON(clav
 toJSONbutton.pack()
 
 labelreverseXML = Label(root, text="Seleccione el documento XML para convertirlo a csv").pack()
-XMLtoCSVbutton = Button(root, text="Convertir XML a CSV", command=lambda: convertXMLtoCSV(claveVig.get())).pack()
+XMLtoCSVbutton = Button(root, text="Convertir XML a CSV", command=lambda: XMLtoCSV(claveVig.get())).pack()
+
+labelreverseJSON = Label(root, text="Seleccione el documento JSON para convertirlo a csv").pack()
+XMLtoCSVbutton = Button(root, text="Convertir JSON a CSV", command=lambda: JSONtoCSV()).pack()
 
 
 label4=Label(root, text="Archivo fuente de los datos a procesar").pack()
