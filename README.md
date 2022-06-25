@@ -17,7 +17,7 @@ El proyecto fue desarrolado utilizando la versión 3.8 de Python, versiones post
 
 * Tkinter (para la interfaz gráfica del programa)
 * PyJWT (para codificar y decodificar JSON Web Tokens)
-* Pandas (para usar la función CSV para manipular)
+* Pandas (para usar la función de manipular archivos CSV)
 * Librerías de python nativas "xml" y "json" (para la manipulación de este tipo de archivos)
 
 ## Funcionalidades
