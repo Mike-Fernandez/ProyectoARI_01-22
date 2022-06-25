@@ -111,41 +111,50 @@ def errorMessage(mensaje):
     messagebox.showerror("ERROR", mensaje)
 
 def XMLtoCSV(clave):
-    rows = ""
-    root.filename = filedialog.askopenfilename(title="Seleccione un archivo XML", filetypes=(("XML files", "*.xml"),("all files", "*.*")))
-    xmlParse = xet.parse(root.filename)
-    xmlR = xmlParse.getroot()
-    for i in xmlR:
-        documento = i.find("documento").text
-        primer_nombre = i.find("primer-nombre").text
-        apellido = i.find("apellido").text
-        credit_card = i.find("credit-card").text
-        tipo = i.find("tipo").text
-        telefono = i.find("telefono").text
+    boolean = clave.isnumeric()
+    print("Clave" + clave)
+    print("Boolean if clave" + str(boolean))
+    if not boolean :
+        errorMessage("La clave ingresada no es valida o no fue ingresada")
+        root.quit()
+    else :
+        rows = ""
+        root.filename = filedialog.askopenfilename(title="Seleccione un archivo XML", filetypes=(("XML files", "*.xml"),("all files", "*.*")))
+        xmlParse = xet.parse(root.filename)
+        xmlR = xmlParse.getroot()
+        for i in xmlR:
+            documento = i.find("documento").text
+            primer_nombre = i.find("primer-nombre").text
+            apellido = i.find("apellido").text
+            credit_card = i.find("credit-card").text
+            tipo = i.find("tipo").text
+            telefono = i.find("telefono").text
 
-        rows += """%s%s%s%s%s%s\n"""%(documento+clicked.get(), primer_nombre+clicked.get(),
-                                           apellido + clicked.get(), desVigenere(credit_card,clave) + clicked.get(),
-                                           tipo + clicked.get(), telefono)
-            
-    
-    #    with open('jwt.txt', 'r') as r:
-    #        fix = r.read()[:-1]
-    #    with open('jwt.txt', 'w') as w:
-    #        w.write(fix)
-    #        w.write("\n]")
+            #falta agregar un try catch por si no han escrito la clave
 
-    showInputFile(root.filename)
-    messageBox("Seleccione donde quiere guardar el archivo CSV resultado")
-    outputfile = filedialog.asksaveasfilename(defaultextension=".csv", title="Guardar como",
-                                              filetypes=(("CSV files", "*.csv"), ("All files", "*.*")))
+            rows += """%s%s%s%s%s%s\n"""%(documento+clicked.get(), primer_nombre+clicked.get(),
+                                            apellido + clicked.get(), desVigenere(credit_card,clave) + clicked.get(),
+                                            tipo + clicked.get(), telefono)
+                
+        
+        #    with open('jwt.txt', 'r') as r:
+        #        fix = r.read()[:-1]
+        #    with open('jwt.txt', 'w') as w:
+        #        w.write(fix)
+        #        w.write("\n]")
 
-    with open(outputfile, 'w') as w:
-        #print("imprimiendo el tipo de rows")
-        #print(type(rows))
-        #print(rows[:-1])
-        w.write(rows[:-1])
-    
-    showOutputFile(outputfile)
+        showInputFile(root.filename)
+        messageBox("Seleccione donde quiere guardar el archivo CSV resultado")
+        outputfile = filedialog.asksaveasfilename(defaultextension=".csv", title="Guardar como",
+                                                filetypes=(("CSV files", "*.csv"), ("All files", "*.*")))
+
+        with open(outputfile, 'w') as w:
+            #print("imprimiendo el tipo de rows")
+            #print(type(rows))
+            #print(rows[:-1])
+            w.write(rows[:-1])
+        
+        showOutputFile(outputfile)
 
 def JSONtoCSV():
     delimitador = clicked.get()
@@ -202,7 +211,7 @@ def CSVtoXML(clave):
     print("Clave" + clave)
     print("Boolean if clave" + str(boolean))
     if not boolean :
-        errorMessage("La clave ingresada no es valida")
+        errorMessage("La clave ingresada no es valida o no fue ingresada")
         root.quit()
     else :
         root.filename = filedialog.askopenfilename(title="Seleccione un archivo CSV", filetypes=(("csv files", "*.csv"),("all files", "*.*")))
