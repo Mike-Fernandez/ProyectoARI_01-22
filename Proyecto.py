@@ -123,7 +123,7 @@ def XMLtoCSV(clave):
         tipo = i.find("tipo").text
         telefono = i.find("telefono").text
 
-        rows += """%s %s %s %s %s %s \n"""%(documento+clicked.get(), primer_nombre+clicked.get(),
+        rows += """%s%s%s%s%s%s\n"""%(documento+clicked.get(), primer_nombre+clicked.get(),
                                            apellido + clicked.get(), desVigenere(credit_card,clave) + clicked.get(),
                                            tipo + clicked.get(), telefono)
             
@@ -148,15 +148,16 @@ def XMLtoCSV(clave):
     showOutputFile(outputfile)
 
 def JSONtoCSV():
+    delimitador = clicked.get()
     root.filename = filedialog.askopenfilename(title="Seleccione un archivo JSON", filetypes=(("JSON files", "*.json"),("all files", "*.*")))
     pdObject = pd.read_json(root.filename, orient='values')
-    csvData = pdObject.to_csv(index=False)
+    csvData = pdObject.to_csv(index=False, header=False, line_terminator='\n', sep=delimitador)
     showInputFile(root.filename)
     messageBox("Seleccione donde quiere guardar el archivo CSV resultado")
     outputfile = filedialog.asksaveasfilename(defaultextension=".csv", title="Guardar como",
                                               filetypes=(("CSV files", "*.csv"), ("All files", "*.*")))
     with open(outputfile, 'w') as w:
-        w.write(csvData)
+        w.write(csvData[:-1])
     showOutputFile(outputfile)
 
 
