@@ -1,7 +1,9 @@
+from textwrap import wrap
 from tkinter import *
 from tkinter import filedialog
 from tkinter import messagebox
 import csv
+from turtle import left
 import jwt
 import json
 import xml.etree.ElementTree as xet
@@ -252,12 +254,20 @@ mainFrame=Frame(root)
 mainFrame.pack(fill=BOTH, expand=1)
 
 espacio = Canvas(mainFrame)
+
+scrollGlobalhorizontal = Scrollbar(mainFrame, orient=HORIZONTAL, command=espacio.xview)
+#horizontal scrollbar needs to be packed before the canvas, else it will get pushed to the right
+scrollGlobalhorizontal.pack(side=BOTTOM,fill=X)
+
 espacio.pack(side=LEFT,fill=BOTH,expand=1)
 
 scrollGlobal = Scrollbar(mainFrame, orient=VERTICAL, command=espacio.yview)
 scrollGlobal.pack(side=RIGHT,fill=Y)
 
-espacio.configure(yscrollcommand=scrollGlobal.set)
+espacio.configure(xscrollcommand=scrollGlobalhorizontal.set, yscrollcommand=scrollGlobal.set)
+#espacio.bind('<Configure>', lambda e: espacio.configure(scrollregion=espacio.bbox("all")))
+
+#espacio.configure(xscrollcommand=scrollGlobalhorizontal.set)
 espacio.bind('<Configure>', lambda e: espacio.configure(scrollregion=espacio.bbox("all")))
 
 sFrame = Frame(espacio)
