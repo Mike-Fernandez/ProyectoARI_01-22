@@ -10,8 +10,8 @@ import xml.etree.ElementTree as xet
 import pandas as pd
 
 root = Tk()
-root.title("Proyecto ARI")
-root.geometry("450x600")
+root.title("Proyecto ARI - Conversor y decodificador de archivos")
+root.geometry("400x550")
 
 delimitadores = [
     ',',
