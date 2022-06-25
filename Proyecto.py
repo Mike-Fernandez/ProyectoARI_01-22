@@ -325,7 +325,7 @@ label4=Label(sFrame, text="Archivo fuente de los datos a procesar").pack()
 
 scrollInStringvar = StringVar()
 scrollInStringvar.set("Contenido  del documento origen")
-scrollIn= Label(sFrame, textvariable=scrollInStringvar, wraplength=1000).pack(pady=10,padx=10)
+scrollIn= Label(sFrame, textvariable=scrollInStringvar, wraplength=1000, fg='#003300', bg='#ffffff').pack(pady=10,padx=10)
 
 label5=Label(sFrame, text="Archivo fuente de los datos a procesados").pack()
 
@@ -334,7 +334,7 @@ scrollOutStringvar.set("Contenido del documento generado")
 #globalScroll = Scrollbar(sFrame)
 #globalScroll.pack(side=RIGHT, fill='y')
 #Entry(sFrame, textvariable=scrollOutStringvar, state='readonly')
-scrollOut = Label(sFrame, textvariable=scrollOutStringvar, wraplength=1000)
+scrollOut = Label(sFrame, textvariable=scrollOutStringvar, wraplength=1000, fg='#003300', bg='#ffffff')
 scrollOut.pack(pady=10,padx=10)
 #outScroll= Scrollbar(sFrame, orient='vertical', command=scrollOut.yview)
 #scrollOut.config(yscrollcommand=outScroll.set)
