@@ -128,13 +128,22 @@ def XMLtoCSV(clave):
                                            tipo + clicked.get(), telefono)
             
     
+    #    with open('jwt.txt', 'r') as r:
+    #        fix = r.read()[:-1]
+    #    with open('jwt.txt', 'w') as w:
+    #        w.write(fix)
+    #        w.write("\n]")
+
     showInputFile(root.filename)
     messageBox("Seleccione donde quiere guardar el archivo CSV resultado")
     outputfile = filedialog.asksaveasfilename(defaultextension=".csv", title="Guardar como",
                                               filetypes=(("CSV files", "*.csv"), ("All files", "*.*")))
 
     with open(outputfile, 'w') as w:
-        w.write(rows)
+        #print("imprimiendo el tipo de rows")
+        #print(type(rows))
+        #print(rows[:-1])
+        w.write(rows[:-1])
     
     showOutputFile(outputfile)
 
