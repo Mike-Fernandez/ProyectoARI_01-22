@@ -100,18 +100,20 @@ def createJWT(json1, clave):
 
 def showInputFile(filename):
     file = open(filename)
-    reader = csv.reader(file)
-    dataPrint=""
-    for line in reader:
-        dataPrint+= str(line)
+    scrollInStringvar.set(file.read())
     file.close()
 
-    print(str(type(dataPrint)))
-    scrollInStringvar.set(dataPrint)
+def showOutputFile(filename):
+    file = open(filename)
+    scrollOutStringvar.set(file.read())
+    file.close()
 
 def decodeJWT(row, clave):
     token = row[0]
     return jwt.decode(token,clave,algorithms=['HS256',])
+
+def messageBox(mensaje):
+    messagebox.showinfo("Info", mensaje)
 
 def errorMessage(mensaje):
     messagebox.showerror("ERROR", mensaje)
@@ -135,19 +137,27 @@ def XMLtoCSV(clave):
                                            tipo + clicked.get(), telefono)
             
     
-    print("/////////////ROWS/////////////")
-    print(rows)
+    showInputFile(root.filename)
+    messageBox("Seleccione donde quiere guardar el archivo resultado")
+    outputfile = filedialog.asksaveasfilename(initialdir="/Users/operator/Documents/ARI/Proyecto", defaultextension=".csv", title="Save As",
+                                              filetypes=(("CSV files", "*.csv"), ("All files", "*.*")))
 
-    with open('output.csv', 'w') as w:
+    with open(outputfile, 'w') as w:
         w.write(rows)
+    
+    showOutputFile(outputfile)
 
 def JSONtoCSV():
     root.filename = filedialog.askopenfilename(initialdir="/Users/operator/Documents/ARI/Proyecto", title="Select a file", filetypes=(("JSON files", "*.json"),("all files", "*.*")))
     pdObject = pd.read_json(root.filename, orient='values')
     csvData = pdObject.to_csv(index=False)
-    print("///////////////CSV///////////////")
-    with open('outputJSON.csv', 'w') as w:
+    showInputFile(root.filename)
+    messageBox("Seleccione donde quiere guardar el archivo resultado")
+    outputfile = filedialog.asksaveasfilename(initialdir="/Users/operator/Documents/ARI/Proyecto", defaultextension=".csv", title="Save As",
+                                              filetypes=(("CSV files", "*.csv"), ("All files", "*.*")))
+    with open(outputfile, 'w') as w:
         w.write(csvData)
+    showOutputFile(outputfile)
 
 
 def JWTtoJSON(clave):
@@ -164,17 +174,22 @@ def JWTtoJSON(clave):
 
         showInputFile(root.filename)
 
-        with open('output.json', 'w') as w:
+        messageBox("Seleccione donde quiere guardar el archivo resultado")
+        outputfile = filedialog.asksaveasfilename(initialdir="/Users/operator/Documents/ARI/Proyecto", defaultextension=".json", title="Save As",
+                                              filetypes=(("JSON files", "*.json"), ("All files", "*.*")))
+
+        with open(outputfile, 'w') as w:
             w.write("[\n")
             w.write("\n".join([(str(decodeJWT(n, clave))+',') for n in data]))
 
-        with open('output.json', 'r') as r:
+        with open(outputfile, 'r') as r:
             fix = r.read()[:-1]
         fix2 = fix.replace("'", '"')
         print(fix2)
-        with open('output.json', 'w') as w:
+        with open(outputfile, 'w') as w:
             w.write(fix2)
             w.write("\n]")
+        showOutputFile(outputfile)
     except:
         errorMessage("Error al decodificar JWT, verifique que el delimitador sea el correcto")
 
@@ -201,12 +216,15 @@ def toXML(clave):
         f.close()
 
         showInputFile(root.filename)
-
-        with open('output.xml', 'w') as w:
+        messageBox("Seleccione donde quiere guardar el archivo resultado")
+        outputfile = filedialog.asksaveasfilename(initialdir="/Users/operator/Documents/ARI/Proyecto", defaultextension=".xml", title="Save As",
+                                              filetypes=(("XML files", "*.xml"), ("All files", "*.*")))
+        with open(outputfile, 'w') as w:
             w.write("<clientes>\n")
             w.write('\n'.join([convertRowtoXML(n,clave) for n in data]))
             w.write("\n</clientes>")
 
+        showOutputFile(outputfile)
         print("it worked!")
 
 def toJSON(clave):
@@ -224,7 +242,11 @@ def toJSON(clave):
 
     showInputFile(root.filename)
 
-    with open('jwt.txt', 'w') as w:
+    messageBox("Seleccione donde quiere guardar el archivo resultado")
+    outputfile = filedialog.asksaveasfilename(initialdir="/Users/operator/Documents/ARI/Proyecto", defaultextension=".txt", title="Save As",
+                                              filetypes=(("Text files", "*.txt"), ("All files", "*.*")))
+
+    with open(outputfile, 'w') as w:
 #        w.write("[\n")
         w.write('\n'.join([(str(convertRowtoJSON(n, clave)) + ',') for n in data]))
     
@@ -234,7 +256,7 @@ def toJSON(clave):
 #        w.write(fix)
 #        w.write("\n]")
 
-
+    showOutputFile(outputfile)
     print("it worked!")
 
 welcome = Label(root, text="Ingrese la clave a usar en el cifrado o descifrado").pack()
@@ -270,12 +292,20 @@ label4=Label(root, text="Archivo fuente de los datos a procesar").pack()
 
 scrollInStringvar = StringVar()
 scrollInStringvar.set("Aqui se mostrará el documento origen")
-scrollIn= Label(root, textvariable=scrollInStringvar, wraplength=500).pack(pady=10,padx=10)
+scrollIn= Label(root, textvariable=scrollInStringvar, wraplength=1000).pack(pady=10,padx=10)
+
+label5=Label(root, text="Archivo fuente de los datos a procesados").pack()
 
 scrollOutStringvar = StringVar()
 scrollOutStringvar.set("Aqui se mostrará el documento generado")
-scrollOut= Label(root, textvariable=scrollOutStringvar, wraplength=500).pack(pady=10,padx=10)
+#globalScroll = Scrollbar(root)
+#globalScroll.pack(side=RIGHT, fill='y')
+scrollOut= Entry(root, textvariable=scrollOutStringvar, state='readonly').pack(pady=10,padx=10)
+outScroll= Scrollbar(root, orient='vertical', command=scrollOut.yview)
+outScroll.pack(side=RIGHT)
+scrollOut.config(yscrollcommand=outScroll.set)
 
+#globalScroll.config(command = scrollOut.yview)
 
 buttonQuit = Button(root, text="Exit", command=root.quit)
 buttonQuit.pack()
