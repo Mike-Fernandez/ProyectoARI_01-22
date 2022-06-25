@@ -239,7 +239,7 @@ def toJSON(clave):
 
     with open(outputfile, 'w') as w:
 #        w.write("[\n")
-        w.write('\n'.join([(str(convertRowtoJSON(n, clave)) + ',') for n in data]))
+        w.write('\n'.join([(str(convertRowtoJSON(n, clave)) + delimitador) for n in data]))
     
 #    with open('jwt.txt', 'r') as r:
 #        fix = r.read()[:-1]
