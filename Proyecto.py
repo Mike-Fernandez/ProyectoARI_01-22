@@ -9,6 +9,7 @@ import pandas as pd
 
 root = Tk()
 root.title("Proyecto ARI")
+root.geometry("450x600")
 
 delimitadores = [
     ',',
@@ -54,8 +55,6 @@ def desVigenere(Final, Clave):
     return cad
 
 
-
-
 def convertRowtoJSON(row, clave):
     objeto = """{
     \"documento\": \"%s\",
@@ -79,24 +78,15 @@ def convertRowtoXML(row, clave):
     \t<telefono>%s</telefono>
 \t</cliente>""" %(row[0],row[1],row[2],ccNumCifrado,row[4],row[5])
 
-def createJWT(json1, clave):
-    a = json.loads(json1)    
-    token = jwt.encode(payload=a, key=clave)
-    return token
 
-#    try:
-#        f = open("output.json")
-#        pl = json.load(f)
-#        print("/////////////////PAYLOAD/////////////////")
-#        print(pl)
-#        token = jwt.encode(payload=pl, key=clave)
-#        with open("jwt.txt", 'w') as w:
-#            w.write(token)
-#    except:
-#        errorMessage("Error while fetching json object")
-#    finally:
-#        f.close()
-#    
+def createJWT(json1, clave):
+
+    try:
+        a = json.loads(json1)    
+        token = jwt.encode(payload=a, key=clave)
+        return token
+    except:
+        errorMessage("Error cifrando objeto JSON")
 
 def showInputFile(filename):
     file = open(filename)
@@ -119,7 +109,6 @@ def errorMessage(mensaje):
     messagebox.showerror("ERROR", mensaje)
 
 def XMLtoCSV(clave):
-    cols = ["documento", "primer-nombre", "apellido", "credit-card", "tipo", "telefono"]
     rows = ""
     root.filename = filedialog.askopenfilename(initialdir="/Users/operator/Documents/ARI/Proyecto", title="Select a file", filetypes=(("XML files", "*.xml"),("all files", "*.*")))
     xmlParse = xet.parse(root.filename)
@@ -259,55 +248,74 @@ def toJSON(clave):
     showOutputFile(outputfile)
     print("it worked!")
 
-welcome = Label(root, text="Ingrese la clave a usar en el cifrado o descifrado").pack()
-welcome2 = Label(root, text="CLAVE DEBE DE SER NUMÉRICA").pack()
-claveVig = Entry(root)
+mainFrame=Frame(root)
+mainFrame.pack(fill=BOTH, expand=1)
+
+espacio = Canvas(mainFrame)
+espacio.pack(side=LEFT,fill=BOTH,expand=1)
+
+scrollGlobal = Scrollbar(mainFrame, orient=VERTICAL, command=espacio.yview)
+scrollGlobal.pack(side=RIGHT,fill=Y)
+
+espacio.configure(yscrollcommand=scrollGlobal.set)
+espacio.bind('<Configure>', lambda e: espacio.configure(scrollregion=espacio.bbox("all")))
+
+sFrame = Frame(espacio)
+
+espacio.create_window((0,0),window=sFrame, anchor="nw")
+
+
+welcome = Label(sFrame, text="Ingrese la clave a usar en el cifrado o descifrado").pack()
+welcome2 = Label(sFrame, text="CLAVE DEBE DE SER NUMÉRICA").pack()
+claveVig = Entry(sFrame)
 claveVig.pack()
 
-labelDelim = Label(root, text="Seleccione el delimitador del archivo a procesar \n Si se produce algun error verifique que el delimitador sea el correcto").pack()
-drop = OptionMenu(root, clicked,*delimitadores)
+labelDelim = Label(sFrame, text="Seleccione el delimitador del archivo a procesar \n Si se produce algun error verifique que el delimitador sea el correcto").pack()
+drop = OptionMenu(sFrame, clicked,*delimitadores)
 drop.pack()
 
-label1 = Label(root, text="Seleccione el archivo para convertirlo a XML").pack()
-toXMLbutton = Button(root, text="Convertir a XML", command=lambda: toXML(claveVig.get()))
+label1 = Label(sFrame, text="Seleccione el archivo para convertirlo a XML").pack()
+toXMLbutton = Button(sFrame, text="Convertir a XML", command=lambda: toXML(claveVig.get()))
 toXMLbutton.pack()
 
-label2 = Label(root, text="Decodifique JWT a JSON").pack()
-toXMLbutton = Button(root, text="Decodifique JWT", command=lambda: JWTtoJSON(claveVig.get()))
+label2 = Label(sFrame, text="Decodifique JWT a JSON").pack()
+toXMLbutton = Button(sFrame, text="Decodifique JWT", command=lambda: JWTtoJSON(claveVig.get()))
 toXMLbutton.pack()
 
-label3 = Label(root, text="Seleccione el archivo para convertirlo a JSON").pack()
-toJSONbutton = Button(root, text="Convertir a JSON", command=lambda: toJSON(claveVig.get()))
+label3 = Label(sFrame, text="Seleccione el archivo para convertirlo a JSON").pack()
+toJSONbutton = Button(sFrame, text="Convertir a JSON", command=lambda: toJSON(claveVig.get()))
 toJSONbutton.pack()
 
-labelreverseXML = Label(root, text="Seleccione el documento XML para convertirlo a csv").pack()
-XMLtoCSVbutton = Button(root, text="Convertir XML a CSV", command=lambda: XMLtoCSV(claveVig.get())).pack()
+labelreverseXML = Label(sFrame, text="Seleccione el documento XML para convertirlo a csv").pack()
+XMLtoCSVbutton = Button(sFrame, text="Convertir XML a CSV", command=lambda: XMLtoCSV(claveVig.get())).pack()
 
-labelreverseJSON = Label(root, text="Seleccione el documento JSON para convertirlo a csv").pack()
-XMLtoCSVbutton = Button(root, text="Convertir JSON a CSV", command=lambda: JSONtoCSV()).pack()
+labelreverseJSON = Label(sFrame, text="Seleccione el documento JSON para convertirlo a csv").pack()
+XMLtoCSVbutton = Button(sFrame, text="Convertir JSON a CSV", command=lambda: JSONtoCSV()).pack()
 
 
-label4=Label(root, text="Archivo fuente de los datos a procesar").pack()
+label4=Label(sFrame, text="Archivo fuente de los datos a procesar").pack()
 
 
 scrollInStringvar = StringVar()
 scrollInStringvar.set("Aqui se mostrará el documento origen")
-scrollIn= Label(root, textvariable=scrollInStringvar, wraplength=1000).pack(pady=10,padx=10)
+scrollIn= Label(sFrame, textvariable=scrollInStringvar, wraplength=1000).pack(pady=10,padx=10)
 
-label5=Label(root, text="Archivo fuente de los datos a procesados").pack()
+label5=Label(sFrame, text="Archivo fuente de los datos a procesados").pack()
 
 scrollOutStringvar = StringVar()
 scrollOutStringvar.set("Aqui se mostrará el documento generado")
-#globalScroll = Scrollbar(root)
+#globalScroll = Scrollbar(sFrame)
 #globalScroll.pack(side=RIGHT, fill='y')
-scrollOut= Entry(root, textvariable=scrollOutStringvar, state='readonly').pack(pady=10,padx=10)
-outScroll= Scrollbar(root, orient='vertical', command=scrollOut.yview)
-outScroll.pack(side=RIGHT)
-scrollOut.config(yscrollcommand=outScroll.set)
+#Entry(sFrame, textvariable=scrollOutStringvar, state='readonly')
+scrollOut = Label(sFrame, textvariable=scrollOutStringvar, wraplength=1000)
+scrollOut.pack(pady=10,padx=10)
+#outScroll= Scrollbar(sFrame, orient='vertical', command=scrollOut.yview)
+#scrollOut.config(yscrollcommand=outScroll.set)
+#outScroll.pack(side=RIGHT)
 
 #globalScroll.config(command = scrollOut.yview)
 
-buttonQuit = Button(root, text="Exit", command=root.quit)
+buttonQuit = Button(sFrame, text="Exit", command=sFrame.quit)
 buttonQuit.pack()
 
 root.mainloop()
