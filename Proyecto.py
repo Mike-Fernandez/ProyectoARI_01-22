@@ -275,45 +275,43 @@ sFrame = Frame(espacio)
 espacio.create_window((0,0),window=sFrame, anchor="nw")
 
 
-welcome = Label(sFrame, text="Ingrese la clave a usar en el cifrado o descifrado").pack()
-welcome2 = Label(sFrame, text="CLAVE DEBE DE SER NUMÉRICA").pack()
+welcome = Label(sFrame, text="Ingrese la clave a usar en el cifrado y descifrado").pack()
+welcome2 = Label(sFrame, text="LA CLAVE DEBE DE SER NUMÉRICA").pack()
 claveVig = Entry(sFrame)
 claveVig.pack()
 
-labelDelim = Label(sFrame, text="Seleccione el delimitador del archivo a procesar \n Si se produce algun error verifique que el delimitador sea el correcto").pack()
+labelDelim = Label(sFrame, text="Seleccione el delimitador de los archivos a procesar \n Si se produce algun error verifique que el delimitador sea el correcto").pack()
 drop = OptionMenu(sFrame, clicked,*delimitadores)
 drop.pack()
 
-label1 = Label(sFrame, text="Seleccione el archivo para convertirlo a XML").pack()
-toXMLbutton = Button(sFrame, text="Convertir a XML", command=lambda: toXML(claveVig.get()))
+label1 = Label(sFrame, text="Seleccione un archivo CSV para convertirlo a XML").pack()
+toXMLbutton = Button(sFrame, text="Convertir CSV a XML", command=lambda: toXML(claveVig.get()))
 toXMLbutton.pack()
 
-label2 = Label(sFrame, text="Decodifique JWT a JSON").pack()
-toXMLbutton = Button(sFrame, text="Decodifique JWT", command=lambda: JWTtoJSON(claveVig.get()))
-toXMLbutton.pack()
-
-label3 = Label(sFrame, text="Seleccione el archivo para convertirlo a JSON").pack()
-toJSONbutton = Button(sFrame, text="Convertir a JSON", command=lambda: toJSON(claveVig.get()))
+label3 = Label(sFrame, text="Seleccione un archivo CSV para convertirlo a JWT").pack()
+toJSONbutton = Button(sFrame, text="Convertir CSV a JWT", command=lambda: toJSON(claveVig.get()))
 toJSONbutton.pack()
 
-labelreverseXML = Label(sFrame, text="Seleccione el documento XML para convertirlo a csv").pack()
+label2 = Label(sFrame, text="Decodifique un archivo JWT a JSON").pack()
+toXMLbutton = Button(sFrame, text="Decodificar JWT a JSON", command=lambda: JWTtoJSON(claveVig.get()))
+toXMLbutton.pack()
+
+labelreverseXML = Label(sFrame, text="Seleccione un documento XML para convertirlo a CSV").pack()
 XMLtoCSVbutton = Button(sFrame, text="Convertir XML a CSV", command=lambda: XMLtoCSV(claveVig.get())).pack()
 
-labelreverseJSON = Label(sFrame, text="Seleccione el documento JSON para convertirlo a csv").pack()
+labelreverseJSON = Label(sFrame, text="Seleccione un documento JSON para convertirlo a CSV").pack()
 XMLtoCSVbutton = Button(sFrame, text="Convertir JSON a CSV", command=lambda: JSONtoCSV()).pack()
-
 
 label4=Label(sFrame, text="Archivo fuente de los datos a procesar").pack()
 
-
 scrollInStringvar = StringVar()
-scrollInStringvar.set("Aqui se mostrará el documento origen")
+scrollInStringvar.set("Contenido  del documento origen")
 scrollIn= Label(sFrame, textvariable=scrollInStringvar, wraplength=1000).pack(pady=10,padx=10)
 
 label5=Label(sFrame, text="Archivo fuente de los datos a procesados").pack()
 
 scrollOutStringvar = StringVar()
-scrollOutStringvar.set("Aqui se mostrará el documento generado")
+scrollOutStringvar.set("Contenido del documento generado")
 #globalScroll = Scrollbar(sFrame)
 #globalScroll.pack(side=RIGHT, fill='y')
 #Entry(sFrame, textvariable=scrollOutStringvar, state='readonly')
