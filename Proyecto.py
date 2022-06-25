@@ -187,7 +187,7 @@ def JWTtoJSON(clave):
     print("it worked!")
 
 
-def toXML(clave):
+def CSVtoXML(clave):
     boolean = clave.isnumeric()
     print("Clave" + clave)
     print("Boolean if clave" + str(boolean))
@@ -218,7 +218,7 @@ def toXML(clave):
         showOutputFile(outputfile)
         print("it worked!")
 
-def toJSON(clave):
+def CSVtoJSON(clave):
     root.filename = filedialog.askopenfilename(initialdir="/Users/operator/Documents/ARI/Proyecto", title="Select a file", filetypes=(("csv files", "*.csv"),("all files", "*.*")))
     delimitador = clicked.get()
     f = open(root.filename)
@@ -285,11 +285,11 @@ drop = OptionMenu(sFrame, clicked,*delimitadores)
 drop.pack()
 
 label1 = Label(sFrame, text="Seleccione un archivo CSV para convertirlo a XML").pack()
-toXMLbutton = Button(sFrame, text="Convertir CSV a XML", command=lambda: toXML(claveVig.get()))
+toXMLbutton = Button(sFrame, text="Convertir CSV a XML", command=lambda: CSVtoXML(claveVig.get()))
 toXMLbutton.pack()
 
 label3 = Label(sFrame, text="Seleccione un archivo CSV para convertirlo a JWT").pack()
-toJSONbutton = Button(sFrame, text="Convertir CSV a JWT", command=lambda: toJSON(claveVig.get()))
+toJSONbutton = Button(sFrame, text="Convertir CSV a JWT", command=lambda: CSVtoJSON(claveVig.get()))
 toJSONbutton.pack()
 
 label2 = Label(sFrame, text="Decodifique un archivo JWT a JSON").pack()
