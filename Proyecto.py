@@ -116,7 +116,7 @@ def XMLtoCSV(clave):
     print("Boolean if clave" + str(boolean))
     if not boolean :
         errorMessage("La clave ingresada no es valida o no fue ingresada")
-        root.quit()
+        #root.quit()
     else :
         rows = ""
         root.filename = filedialog.askopenfilename(title="Seleccione un archivo XML", filetypes=(("XML files", "*.xml"),("all files", "*.*")))
@@ -212,7 +212,7 @@ def CSVtoXML(clave):
     print("Boolean if clave" + str(boolean))
     if not boolean :
         errorMessage("La clave ingresada no es valida o no fue ingresada")
-        root.quit()
+        #root.quit()
     else :
         root.filename = filedialog.askopenfilename(title="Seleccione un archivo CSV", filetypes=(("csv files", "*.csv"),("all files", "*.*")))
         delimitador = clicked.get()
