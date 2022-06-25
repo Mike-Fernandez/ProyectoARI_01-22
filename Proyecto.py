@@ -112,7 +112,7 @@ def errorMessage(mensaje):
 
 def XMLtoCSV(clave):
     rows = ""
-    root.filename = filedialog.askopenfilename(initialdir="/Users/operator/Documents/ARI/Proyecto", title="Select a file", filetypes=(("XML files", "*.xml"),("all files", "*.*")))
+    root.filename = filedialog.askopenfilename(title="Seleccione un archivo XML", filetypes=(("XML files", "*.xml"),("all files", "*.*")))
     xmlParse = xet.parse(root.filename)
     xmlR = xmlParse.getroot()
     for i in xmlR:
@@ -129,8 +129,8 @@ def XMLtoCSV(clave):
             
     
     showInputFile(root.filename)
-    messageBox("Seleccione donde quiere guardar el archivo resultado")
-    outputfile = filedialog.asksaveasfilename(initialdir="/Users/operator/Documents/ARI/Proyecto", defaultextension=".csv", title="Save As",
+    messageBox("Seleccione donde quiere guardar el archivo CSV resultado")
+    outputfile = filedialog.asksaveasfilename(defaultextension=".csv", title="Guardar como",
                                               filetypes=(("CSV files", "*.csv"), ("All files", "*.*")))
 
     with open(outputfile, 'w') as w:
@@ -139,12 +139,12 @@ def XMLtoCSV(clave):
     showOutputFile(outputfile)
 
 def JSONtoCSV():
-    root.filename = filedialog.askopenfilename(initialdir="/Users/operator/Documents/ARI/Proyecto", title="Select a file", filetypes=(("JSON files", "*.json"),("all files", "*.*")))
+    root.filename = filedialog.askopenfilename(title="Seleccione un archivo JSON", filetypes=(("JSON files", "*.json"),("all files", "*.*")))
     pdObject = pd.read_json(root.filename, orient='values')
     csvData = pdObject.to_csv(index=False)
     showInputFile(root.filename)
-    messageBox("Seleccione donde quiere guardar el archivo resultado")
-    outputfile = filedialog.asksaveasfilename(initialdir="/Users/operator/Documents/ARI/Proyecto", defaultextension=".csv", title="Save As",
+    messageBox("Seleccione donde quiere guardar el archivo CSV resultado")
+    outputfile = filedialog.asksaveasfilename(defaultextension=".csv", title="Guardar como",
                                               filetypes=(("CSV files", "*.csv"), ("All files", "*.*")))
     with open(outputfile, 'w') as w:
         w.write(csvData)
@@ -153,7 +153,7 @@ def JSONtoCSV():
 
 def JWTtoJSON(clave):
     try:
-        root.filename = filedialog.askopenfilename(initialdir="/Users/operator/Documents/ARI/Proyecto", title="Select a file", filetypes=(("text files", "*.txt"),("all files", "*.*")))
+        root.filename = filedialog.askopenfilename(title="Seleccione un archivo TXT", filetypes=(("text files", "*.txt"),("all files", "*.*")))
         delimitador = clicked.get()
         f = open(root.filename)
         csv_f = csv.reader(f, delimiter=delimitador)
@@ -165,8 +165,8 @@ def JWTtoJSON(clave):
 
         showInputFile(root.filename)
 
-        messageBox("Seleccione donde quiere guardar el archivo resultado")
-        outputfile = filedialog.asksaveasfilename(initialdir="/Users/operator/Documents/ARI/Proyecto", defaultextension=".json", title="Save As",
+        messageBox("Seleccione donde quiere guardar el archivo JSON resultado")
+        outputfile = filedialog.asksaveasfilename(defaultextension=".json", title="Guardar como",
                                               filetypes=(("JSON files", "*.json"), ("All files", "*.*")))
 
         with open(outputfile, 'w') as w:
@@ -195,7 +195,7 @@ def CSVtoXML(clave):
         errorMessage("La clave ingresada no es valida")
         root.quit()
     else :
-        root.filename = filedialog.askopenfilename(initialdir="/Users/operator/Documents/ARI/Proyecto", title="Select a file", filetypes=(("csv files", "*.csv"),("all files", "*.*")))
+        root.filename = filedialog.askopenfilename(title="Seleccione un archivo CSV", filetypes=(("csv files", "*.csv"),("all files", "*.*")))
         delimitador = clicked.get()
         f = open(root.filename)
         csv_f = csv.reader(f, delimiter=delimitador)
@@ -207,8 +207,8 @@ def CSVtoXML(clave):
         f.close()
 
         showInputFile(root.filename)
-        messageBox("Seleccione donde quiere guardar el archivo resultado")
-        outputfile = filedialog.asksaveasfilename(initialdir="/Users/operator/Documents/ARI/Proyecto", defaultextension=".xml", title="Save As",
+        messageBox("Seleccione donde quiere guardar el archivo XML resultado")
+        outputfile = filedialog.asksaveasfilename(defaultextension=".xml", title="Guardar como",
                                               filetypes=(("XML files", "*.xml"), ("All files", "*.*")))
         with open(outputfile, 'w') as w:
             w.write("<clientes>\n")
@@ -219,7 +219,7 @@ def CSVtoXML(clave):
         print("it worked!")
 
 def CSVtoJSON(clave):
-    root.filename = filedialog.askopenfilename(initialdir="/Users/operator/Documents/ARI/Proyecto", title="Select a file", filetypes=(("csv files", "*.csv"),("all files", "*.*")))
+    root.filename = filedialog.askopenfilename(title="Seleccione un archivo CSV", filetypes=(("csv files", "*.csv"),("all files", "*.*")))
     delimitador = clicked.get()
     f = open(root.filename)
     csv_f = csv.reader(f, delimiter=delimitador)
@@ -233,8 +233,8 @@ def CSVtoJSON(clave):
 
     showInputFile(root.filename)
 
-    messageBox("Seleccione donde quiere guardar el archivo resultado")
-    outputfile = filedialog.asksaveasfilename(initialdir="/Users/operator/Documents/ARI/Proyecto", defaultextension=".txt", title="Save As",
+    messageBox("Seleccione donde quiere guardar el archivo TXT resultado")
+    outputfile = filedialog.asksaveasfilename(defaultextension=".txt", title="Guardar como",
                                               filetypes=(("Text files", "*.txt"), ("All files", "*.*")))
 
     with open(outputfile, 'w') as w:
