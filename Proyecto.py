@@ -1,9 +1,7 @@
-from textwrap import wrap
 from tkinter import *
 from tkinter import filedialog
 from tkinter import messagebox
 import csv
-from turtle import left
 import jwt
 import json
 import xml.etree.ElementTree as xet

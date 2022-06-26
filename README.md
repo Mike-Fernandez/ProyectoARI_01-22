@@ -36,8 +36,10 @@ El proyecto fue desarrolado utilizando la versión 3.8 de Python, versiones post
 
 ## Guía de uso
 
+* Antes de correr el código de python asegurarse de instalar las libreriras de pandas con "pip isntall pandas" y "pip install pyjwt"
 * Para usar el software se debe correr el archivo Proyecto.py desde la terminal, una vez ejecutado abrirá una ventana la cual es el menú principal de la aplicación
 * Debe ingresar una clave de cifrado para los datos dentro de los archivos
 * Debe seleccionar un delimitador para sus archivos de texto, si utiliza un delimitador incorrecto, el programa levantara un error y se detendrá.
 * Una vez hecho esto, con los botones de acción puede elegir tareas de conversión de archivos libremente, por ejemplo, convertir un archivo separado por comas (CSV) a un archivo XML
 * Al terminar de usar el programa puede cerrarlo con el boton "Salir"
+* En caso de que el texto se salga de la ventana visible y no se pueda operar el scrollbar cambiar el tamaño de la ventana, esto permite que se pueda usar los scrollbars
